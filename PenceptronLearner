@@ -1,0 +1,58 @@
+print "Enter the initialisation Weights :"
+weights = list()
+numberOfInputs = 4
+for i in range(numberOfInputs):
+    tempWeight = int(input("Weight " + str(i + 1) + " : "))
+    weights.append(tempWeight)
+     
+xInputs = list()
+for i in range(0,8):
+    binary = "1" + bin(int(i))[2:].zfill(3)    
+    xInputs.append(binary)
+
+    
+isConverged = False
+
+print "Learning the Perceptron based on the Weights fed in ...."
+
+def AdjustWeights(areWeightsAdded,tempInput):
+    if areWeightsAdded:
+        for i in range(0,len(weights)):
+            weights[i] = int(weights[i]) + int(tempInput[i])
+    else :
+        for i in range(0,len(weights)):
+            weights[i] = int(weights[i]) - int(tempInput[i])
+    return;
+
+
+def GetWeightedSum(tempInput):
+    flag = 0
+    for i in range(0, len(tempInput)):
+        flag = flag + (int)(weights[i]) * (int)(tempInput[i])
+    return flag               
+
+
+while not isConverged :
+    print weights
+    convergenceCount = 0
+    for i in range(0,len(xInputs)):
+        tempInput = xInputs[i]
+        weightedSum = GetWeightedSum(tempInput)
+        if i == 0 :
+            if weightedSum >= 0:
+                AdjustWeights(False,tempInput)
+            else :
+                convergenceCount += 1
+        else :
+            
+            if weightedSum < 0:
+                AdjustWeights(True,tempInput)
+            else :
+                convergenceCount += 1
+    if convergenceCount == len(xInputs):
+        isConverged = True
+            
+            
+
+
+
